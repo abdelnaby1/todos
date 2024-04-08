@@ -1,15 +1,15 @@
+"use server";
 import { getTodoListAction } from "@/actions/todo.actions";
-import TodoCard from "@/components/TodoForm";
 import { TodoList } from "@/components/TodoList";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import Image from "next/image";
+import { auth } from "@clerk/nextjs";
 
 export default async function Home() {
-  const todos = await getTodoListAction();
+  const { userId }: { userId: string | null } = auth();
+
+  const todos = await getTodoListAction(userId);
   return (
-    <main className="container">
-      <TodoList todos={todos} />
+    <main className="container w-3/4">
+      <TodoList todos={todos} user_id={userId} />
     </main>
   );
 }
